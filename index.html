@@ -701,49 +701,115 @@ function buildMethodSection(key){
 function buildPembahasan(){
   const total = scores.reduce((a,b)=>a+b,0);
   const max = 9*4;
+
   return `
     <div class="pembahasan">
+
       <div class="pb-hero">
         <div class="pb-hero-score">${total} / ${max}</div>
         <div class="pb-hero-label">total sel benar dari semua kelompok</div>
       </div>
+
       <div style="padding:0 24px">
+
         <div class="pb-aha">
           <div class="pb-aha-title">Momen "aha" hari ini</div>
+
           <div class="pb-aha-text">
-            NTB Konstan keempat kelompok hasilnya <span class="highlight">sama semua</span> — Rp 12.000 / 12.800 / 14.000 / 14.400. 
-            Bukan kebetulan. Artinya keempat metode itu ngitung hal yang <em>sama persis</em>, 
-            cuma jalan masuknya beda tergantung data apa yang tersedia di lapangan.
+            Kalau diperhatikan, hasil NTB konstan dari keempat metode ternyata 
+            <span class="highlight">hampir sama semua</span>. 
+            Artinya, sebenarnya tujuan semua metode ini sama: mencari nilai produksi 
+            yang benar-benar mencerminkan pertumbuhan riil, bukan sekadar kenaikan harga.
+            <br><br>
+            Yang membedakan hanyalah data yang tersedia, pendekatan yang dipakai, 
+            dan tingkat ketelitian perhitungannya.
           </div>
         </div>
+
       </div>
+
       <div class="pb-items">
+
         <div class="pb-item">
-          <div class="pb-method"><span class="pb-tag">Revaluasi</span></div>
-          <div class="pb-text">Paling straightforward — langsung kalikan kuantitas tahun berjalan dengan harga tahun dasar. 
-          Cocok kalau data kuantitas dan harga per komoditas tersedia dengan jelas. 
-          Tapi kalau kualitas produknya berubah dari tahun ke tahun, angkanya bisa menyesatkan.</div>
+          <div class="pb-method">
+            <span class="pb-tag">Revaluasi</span>
+          </div>
+
+          <div class="pb-text">
+            Metode ini paling mudah dibayangkan karena kita langsung memakai jumlah produksi 
+            tahun berjalan lalu dihargai menggunakan harga tahun dasar.
+            <br><br>
+            Cocok dipakai kalau data produksi dan harga tersedia dengan jelas. 
+            Tapi kalau kualitas barang berubah dari waktu ke waktu, hasilnya bisa kurang menggambarkan kondisi sebenarnya.
+          </div>
         </div>
+
         <div class="pb-item">
-          <div class="pb-method"><span class="pb-tag">Ekstrapolasi</span></div>
-          <div class="pb-text">Gak perlu data harga tiap tahun, cukup indeks produksi sebagai ekstrapolator. 
-          Hasilnya sedikit beda dari Revaluasi karena indeks dibulatkan. 
-          Cocok dipakai kalau datanya lebih ke statistik produksi, bukan harga langsung.</div>
+          <div class="pb-method">
+            <span class="pb-tag">Ekstrapolasi</span>
+          </div>
+
+          <div class="pb-text">
+            Pada metode ini kita tidak langsung memakai harga, tetapi menggunakan indeks produksi 
+            untuk melihat perkembangan output dari tahun ke tahun.
+            <br><br>
+            Jadi metode ini cocok ketika data harga sulit diperoleh, tetapi data pertumbuhan produksinya tersedia.
+          </div>
         </div>
+
         <div class="pb-item">
-          <div class="pb-method"><span class="pb-tag">Deflasi</span></div>
-          <div class="pb-text">Mulai dari Output Berlaku lalu dibagi indeks harga. 
-          Ini yang paling sering dipakai di dunia nyata karena data ekonomi biasanya tersedia dalam nilai uang, 
-          bukan kuantitas fisik. Konsumsi antara diasumsikan proporsional dengan output.</div>
+          <div class="pb-method">
+            <span class="pb-tag">Deflasi</span>
+          </div>
+
+          <div class="pb-text">
+            Metode deflasi adalah metode yang paling sering digunakan dalam praktik karena data ekonomi 
+            biasanya tersedia dalam bentuk nilai uang.
+            <br><br>
+            Caranya adalah “membersihkan” pengaruh kenaikan harga menggunakan indeks harga, 
+            sehingga pertumbuhan yang terlihat benar-benar berasal dari peningkatan produksi, bukan inflasi.
+          </div>
         </div>
+
         <div class="pb-item">
-          <div class="pb-method"><span class="pb-tag">Double Deflasi</span></div>
-          <div class="pb-text">Paling akurat — konsumsi antara dideflasi pakai indeks harganya sendiri, bukan diasumsikan proporsional. 
-          Penting karena harga bahan baku bisa naik lebih cepat atau lebih lambat dari harga produk jadi. 
-          Direkomendasikan SNA 2008, tapi butuh data lebih lengkap.</div>
+          <div class="pb-method">
+            <span class="pb-tag">Double Deflasi</span>
+          </div>
+
+          <div class="pb-text">
+            Double deflasi merupakan metode yang lebih rinci dan lebih akurat karena 
+            output dan konsumsi antara dihitung secara terpisah menggunakan deflator masing-masing.
+            <br><br>
+            Hal ini penting karena dalam kenyataannya harga bahan baku dan harga barang jadi 
+            tidak selalu berubah dengan kecepatan yang sama.
+          </div>
         </div>
+
+        <div class="pb-item">
+
+          <div class="pb-method">
+            <span class="pb-tag">Kesimpulan</span>
+          </div>
+
+          <div class="pb-text">
+            Jadi inti dari game hari ini sebenarnya bukan cuma benar atau salah saat mengisi tabel.
+            <br><br>
+            Yang lebih penting adalah memahami bahwa metode yang dipilih dalam penghitungan PDB 
+            bisa memengaruhi cara kita membaca kondisi ekonomi.
+            <br><br>
+            Karena itu, konsep seperti ADHK, deflasi, sampai CVM penting dipahami agar kita bisa melihat 
+            pertumbuhan ekonomi secara lebih tepat dan tidak bias.
+            <br><br>
+            Semoga setelah game ini, metode-metode tadi tidak cuma terasa seperti rumus, 
+            tapi juga lebih mudah dipahami logikanya 🙌
+          </div>
+
+        </div>
+
       </div>
-    </div>`;
+
+    </div>
+  `;
 }
 
 const KEYS = ['revaluasi','ekstrapolasi','deflasi','double'];
