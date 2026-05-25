@@ -937,18 +937,18 @@ function handlePembahasanClick(e){
 
 renderSection(0);
 
-let seconds = 15*60;
+let seconds = 10*60;
 let paused = false;
 function togglePause(){
   paused = !paused;
   document.getElementById('btn-pause').textContent = paused ? 'Lanjut' : 'Pause';
 }
 function resetTimer(){
-  seconds = 15*60;
+  seconds = 10*60;
   paused = false;
   document.getElementById('btn-pause').textContent = 'Pause';
   timerEl.classList.remove('warn');
-  timerEl.textContent = '15:00';
+  timerEl.textContent = '10:00';
 }
 const timerEl = document.getElementById('timer');
 const interval = setInterval(()=>{
