@@ -510,6 +510,21 @@
     line-height: 1.65;
   }
 
+  /* link style inside pb-aha to match card look */
+  .pb-aha .pb-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: var(--white);
+    border: 1.5px solid var(--orange-mid);
+    color: var(--orange);
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.12s;
+  }
+  .pb-aha .pb-link:hover { background: var(--orange-pale); }
+
   .pb-items { padding: 0 24px 24px; }
 
   .pb-item {
@@ -752,6 +767,9 @@ function buildPembahasan(){
             <br><br>
             Yang membedakan hanyalah data yang tersedia, pendekatan yang dipakai, 
             dan tingkat ketelitian perhitungannya.
+            <div>
+              <a class="pb-link" href="https://s.stis.ac.id/KunciJawaban_ReviewP8SNN_3SI1" target="_blank" rel="noopener">Lihat kunci jawaban (spreadsheet)</a>
+            </div>
           </div>
         </div>
 
