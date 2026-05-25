@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Review PDB — Metode ADHK</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --orange: #E8631A;
@@ -28,7 +28,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: var(--cream);
     color: var(--text);
     min-height: 100vh;
@@ -170,9 +170,10 @@
   /* TABS */
   .tabs {
     display: flex;
-    gap: 6px;
+    gap: 12px;
     margin-bottom: 20px;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .tab {
@@ -208,6 +209,25 @@
   }
 
   .tab.last-tab { margin-left: auto; }
+
+  /* Pembahasan button (right actions) - green style */
+  .btn-row .right-actions .btn {
+    background: var(--white);
+    color: var(--text-mid);
+    border-color: var(--border);
+    border-radius: 8px;
+    padding: 9px 16px;
+  }
+  .btn-row .right-actions .btn:hover {
+    background: var(--cream-dark);
+    color: var(--text);
+  }
+  .btn-row .right-actions .btn.clicked,
+  .btn-row .right-actions .btn:active {
+    background: var(--green);
+    color: var(--white);
+    border-color: var(--green);
+  }
 
   /* METHOD CARD */
   .method-card {
@@ -423,14 +443,19 @@
 
   .btn.primary:hover { background: #d4561a; border-color: #d4561a; }
 
+  .btn-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; position: relative; }
+
+  .btn-row .left-actions { display:flex; gap:10px; align-items:center; }
+  .btn-row .right-actions { margin-left:auto; display:flex; gap:10px; align-items:center; }
+
   .score-badge {
-    margin-left: auto;
     font-size: 12px;
     font-weight: 700;
-    color: var(--green);
-    background: var(--green-light);
-    padding: 5px 12px;
-    border-radius: 20px;
+    color: var(--white);
+    background: var(--green);
+    padding: 6px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(45,138,94,0.12);
   }
 
   /* PEMBAHASAN */
@@ -540,7 +565,7 @@
 <div class="header">
   <div class="header-left">
     <span class="bps-badge">3SI</span>
-    <span class="header-title">Review PDB — Metode ADHK &amp; CVM</span>
+    <span class="header-title">Review PDB — Metode ADHK</span>
   </div>
   <div class="timer-wrap">
     <span class="timer-label">Waktu</span>
@@ -579,7 +604,6 @@
     <button class="tab" onclick="switchTab(1)">Kelompok 2 — Ekstrapolasi</button>
     <button class="tab" onclick="switchTab(2)">Kelompok 3 — Deflasi</button>
     <button class="tab" onclick="switchTab(3)">Kelompok 4 — Double Deflasi</button>
-    <button class="tab last-tab" onclick="switchTab(4)">Pembahasan</button>
   </div>
 
   <div id="sections"></div>
@@ -691,9 +715,14 @@ function buildMethodSection(key){
         </table>
       </div>
       <div class="btn-row">
-        <button class="btn primary" onclick="checkSection('${key}')">Cek jawaban</button>
-        <button class="btn" onclick="resetSection('${key}')">Reset</button>
         <span class="score-badge" id="score-${d.prefix}" style="display:none"></span>
+        <div class="left-actions">
+          <button class="btn primary" onclick="checkSection('${key}')">Cek jawaban</button>
+          <button class="btn" onclick="resetSection('${key}')">Reset</button>
+        </div>
+        <div class="right-actions">
+          <button class="btn" onclick="handlePembahasanClick(event)">Pembahasan</button>
+        </div>
       </div>
     </div>`;
 }
@@ -897,6 +926,13 @@ function resetSection(key){
   const idx = KEYS.indexOf(key);
   scores[idx] = 0;
   renderSection(currentTab);
+}
+
+function handlePembahasanClick(e){
+  document.querySelectorAll('.btn-row .right-actions .btn').forEach(b=>b.classList.remove('clicked'));
+  const btn = e.currentTarget || (e.target && e.target.closest('button'));
+  if(btn) btn.classList.add('clicked');
+  switchTab(4);
 }
 
 renderSection(0);
