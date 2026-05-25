@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review PDB — Metode ADHK</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E8631A;
+    --orange-light: #F5894A;
+    --orange-pale: #FDF0E8;
+    --orange-mid: #FCDFC8;
+    --brown: #7A3410;
+    --cream: #FAF7F3;
+    --cream-dark: #F2EDE6;
+    --text: #1C1410;
+    --text-mid: #5C4A3A;
+    --text-muted: #9C8878;
+    --border: #E8DDD4;
+    --white: #FFFFFF;
+    --green: #2D8A5E;
+    --green-light: #E8F5EE;
+    --red: #C94040;
+    --red-light: #FAEAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--orange);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .bps-badge {
+    background: var(--white);
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .header-title {
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.95;
+  }
+
+  .timer-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .timer-label {
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .timer {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+    background: rgba(0,0,0,0.15);
+    padding: 4px 12px;
+    border-radius: 6px;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  .timer.warn { background: rgba(0,0,0,0.35); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+
+  /* MAIN */
+  .main { max-width: 960px; margin: 0 auto; padding: 28px 20px 48px; }
+
+  /* DATA CARD */
+  .data-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+
+  .card-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+  }
+
+  .card-label span {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .data-table th {
+    background: var(--cream-dark);
+    padding: 9px 14px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-mid);
+    border: 1px solid var(--border);
+  }
+
+  .data-table th:first-child { text-align: left; }
+
+  .data-table td {
+    padding: 9px 14px;
+    text-align: center;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .data-table td:first-child {
+    text-align: left;
+    color: var(--text-mid);
+    font-weight: 500;
+    background: var(--cream);
+  }
+
+  .data-table tr:last-child td { color: var(--text-muted); font-weight: 400; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 8px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-mid);
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .tab:hover { border-color: var(--orange-light); color: var(--orange); }
+
+  .tab.active {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
+  }
+
+  .tab.done {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .tab.done.active {
+    background: var(--green);
+    color: var(--white);
+    border-color: var(--green);
+  }
+
+  .tab.last-tab { margin-left: auto; }
+
+  /* METHOD CARD */
+  .method-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+
+  .method-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+
+  .method-num {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--orange-pale);
+    color: var(--orange);
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .method-info { flex: 1; }
+
+  .method-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .method-formula {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* BANK */
+  .bank-wrap { margin-bottom: 16px; }
+
+  .bank-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+  }
+
+  .bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 12px;
+    background: var(--cream);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    min-height: 50px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 7px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: grab;
+    user-select: none;
+    color: var(--text);
+    transition: all 0.12s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .chip:hover {
+    border-color: var(--orange-light);
+    background: var(--orange-pale);
+    color: var(--orange);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(232,99,26,0.15);
+  }
+
+  .chip:active { cursor: grabbing; transform: scale(0.97); }
+  .chip.used { opacity: 0.25; pointer-events: none; }
+  .chip.dragging { opacity: 0.45; }
+
+  /* WORK TABLE */
+  .table-wrap { overflow-x: auto; margin-bottom: 16px; }
+
+  .work-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .work-table th {
+    background: var(--cream-dark);
+    padding: 9px 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--text-mid);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .work-table th:first-child { text-align: left; }
+
+  .work-table td {
+    padding: 7px 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+    min-width: 90px;
+  }
+
+  .work-table td:first-child {
+    text-align: left;
+    font-size: 12px;
+    color: var(--text-mid);
+    background: var(--cream);
+    min-width: 60px;
+    font-weight: 600;
+    padding-left: 12px;
+  }
+
+  .given-val {
+    font-weight: 700;
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  /* DROP CELL */
+  .drop-cell {
+    min-height: 34px;
+    border-radius: 7px;
+    border: 1.5px dashed var(--border);
+    background: var(--cream);
+    transition: all 0.12s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .drop-cell.over {
+    border-color: var(--orange);
+    background: var(--orange-pale);
+  }
+
+  .drop-cell.filled {
+    border-style: solid;
+    border-color: var(--border);
+    background: var(--white);
+  }
+
+  .drop-cell.correct {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+
+  .drop-cell.wrong {
+    border-color: var(--red);
+    background: var(--red-light);
+  }
+
+  .drop-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .drop-cell.correct .drop-val { color: var(--green); }
+  .drop-cell.wrong .drop-val { color: var(--red); }
+
+  /* BUTTONS */
+  .btn-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+  .btn {
+    padding: 9px 20px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.12s;
+    color: var(--text-mid);
+    font-family: inherit;
+  }
+
+  .btn:hover { background: var(--cream-dark); border-color: #ccc; color: var(--text); }
+
+  .btn.primary {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
+  }
+
+  .btn.primary:hover { background: #d4561a; border-color: #d4561a; }
+
+  .score-badge {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-light);
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  /* PEMBAHASAN */
+  .pembahasan {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .pb-hero {
+    background: var(--orange);
+    padding: 28px 28px 24px;
+    text-align: center;
+  }
+
+  .pb-hero-score {
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .pb-hero-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+  }
+
+  .pb-aha {
+    margin: 24px 24px 0;
+    padding: 16px 20px;
+    background: var(--orange-pale);
+    border: 1.5px solid var(--orange-mid);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .pb-aha-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .pb-aha-text {
+    font-size: 14px;
+    color: var(--brown);
+    line-height: 1.65;
+  }
+
+  .pb-items { padding: 0 24px 24px; }
+
+  .pb-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--cream-dark);
+  }
+
+  .pb-item:last-child { border-bottom: none; }
+
+  .pb-method {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .pb-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+    background: var(--orange-pale);
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .pb-text {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+
+  .highlight {
+    background: var(--orange-pale);
+    color: var(--brown);
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header { padding: 0 16px; }
+    .main { padding: 16px 12px 40px; }
+    .method-card, .data-card { padding: 16px; }
+    .tab { font-size: 12px; padding: 7px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <span class="bps-badge">BPS</span>
+    <span class="header-title">Review PDB — Metode ADHK &amp; CVM</span>
+  </div>
+  <div class="timer-wrap">
+    <span class="timer-label">Waktu</span>
+    <div class="timer" id="timer">15:00</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="data-card">
+    <div class="card-label"><div class="dot"></div><span>Data kasus — Produksi Kopi (Tahun Dasar: 2021)</span></div>
+    <div style="overflow-x:auto">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Rincian</th>
+          <th>2021</th><th>2022</th><th>2023</th><th>2024</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Produksi (Kg)</td><td>300</td><td>320</td><td>350</td><td>360</td></tr>
+        <tr><td>Harga (Rp/Kg)</td><td>50</td><td>55</td><td>60</td><td>65</td></tr>
+        <tr><td>Output Berlaku (Rp)</td><td>15.000</td><td>17.600</td><td>21.000</td><td>23.400</td></tr>
+        <tr><td>Indeks Harga (%)</td><td>100</td><td>110</td><td>120</td><td>130</td></tr>
+        <tr><td>Indeks Produksi (%)</td><td>100</td><td>106,7</td><td>116,7</td><td>120</td></tr>
+        <tr><td>Rasio Konsumsi Antara</td><td colspan="4">20% dari output (tetap dari tahun dasar)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" onclick="switchTab(0)">Kelompok 1 — Revaluasi</button>
+    <button class="tab" onclick="switchTab(1)">Kelompok 2 — Ekstrapolasi</button>
+    <button class="tab" onclick="switchTab(2)">Kelompok 3 — Deflasi</button>
+    <button class="tab" onclick="switchTab(3)">Kelompok 4 — Double Deflasi</button>
+    <button class="tab last-tab" onclick="switchTab(4)">Pembahasan</button>
+  </div>
+
+  <div id="sections"></div>
+
+</div>
+
+<script>
+const YEARS = ['2021','2022','2023','2024'];
+
+const DATA = {
+  revaluasi: {
+    num: 1,
+    title: 'Revaluasi',
+    formula: 'Output Konstan = Produksi × Harga Tahun Dasar (Rp 50)   |   NTB Konstan = Output Konstan − Konsumsi Antara (20%)',
+    headers: ['Tahun','Output Konstan (Rp)','Kons. Antara (Rp)','NTB Konstan (Rp)'],
+    given: [[15000],[3000],[12000]],
+    answers: [[15000,16000,17500,18000],[3000,3200,3500,3600],[12000,12800,14000,14400]],
+    prefix: 'r',
+    bankExtra: []
+  },
+  ekstrapolasi: {
+    num: 2,
+    title: 'Ekstrapolasi',
+    formula: 'Output Konstan = Output Dasar × (Indeks Produksi / 100)   |   NTB Konstan = Output Konstan − Konsumsi Antara (20%)',
+    headers: ['Tahun','Output Konstan (Rp)','Kons. Antara (Rp)','NTB Konstan (Rp)'],
+    given: [[15000],[3000],[12000]],
+    answers: [[15000,16005,17505,18000],[3000,3201,3501,3600],[12000,12804,14004,14400]],
+    prefix: 'e',
+    bankExtra: []
+  },
+  deflasi: {
+    num: 3,
+    title: 'Deflasi',
+    formula: 'Output Konstan = Output Berlaku ÷ (Indeks Harga / 100)   |   NTB Konstan = Output Konstan − Konsumsi Antara (20%)',
+    headers: ['Tahun','Output Berlaku (Rp)','Output Konstan (Rp)','KA Konstan (Rp)','NTB Konstan (Rp)'],
+    given: [[15000],[15000],[3000],[12000]],
+    answers: [[15000,17600,21000,23400],[15000,16000,17500,18000],[3000,3200,3500,3600],[12000,12800,14000,14400]],
+    prefix: 'd',
+    bankExtra: []
+  },
+  double: {
+    num: 4,
+    title: 'Double Deflasi',
+    formula: 'Output Konstan = Output Berlaku ÷ IH   |   KA Konstan = KA Berlaku ÷ IH   |   NTB = Output Konstan − KA Konstan',
+    headers: ['Tahun','Output Berlaku','Output Konstan','KA Berlaku','KA Konstan','NTB Konstan'],
+    given: [[15000],[15000],[3000],[3000],[12000]],
+    answers: [[15000,17600,21000,23400],[15000,16000,17500,18000],[3000,3520,4200,4680],[3000,3200,3500,3600],[12000,12800,14000,14400]],
+    prefix: 'dd',
+    bankExtra: []
+  }
+};
+
+let scores = [0,0,0,0];
+let currentTab = 0;
+let dragSrc = null;
+
+function fmt(n){
+  if(n===undefined||n===null||isNaN(n)) return '';
+  return Math.round(n*10)/10 === Math.round(n) 
+    ? Math.round(n).toLocaleString('id') 
+    : n.toLocaleString('id',{minimumFractionDigits:1,maximumFractionDigits:1});
+}
+
+function collectBankChips(answers){
+  const all = [];
+  answers.forEach(row => row.slice(1).forEach(v => { if(!all.includes(v)) all.push(v); }));
+  return all.sort((a,b)=>a-b);
+}
+
+function buildMethodSection(key){
+  const d = DATA[key];
+  const cols = d.answers.length;
+  const chips = collectBankChips(d.answers);
+  const bankHtml = chips.map(c =>
+    `<div class="chip" id="chip-${d.prefix}-${c}" draggable="true" ondragstart="dStart(event,'chip-${d.prefix}-${c}')" data-val="${c}">${fmt(c)}</div>`
+  ).join('');
+
+  let rows = YEARS.map((y,yi) => {
+    let cells = `<td>${y}</td>`;
+    for(let ci=0; ci<cols; ci++){
+      const val = d.answers[ci][yi];
+      if(yi===0){
+        cells += `<td><span class="given-val">${fmt(val)}</span></td>`;
+      } else {
+        const id = `${d.prefix}-${ci}-${yi}`;
+        cells += `<td><div class="drop-cell" id="${id}" data-answer="${val}" ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event,this)"></div></td>`;
+      }
+    }
+    return `<tr>${cells}</tr>`;
+  }).join('');
+
+  return `
+    <div class="method-card">
+      <div class="method-header">
+        <div class="method-num">${d.num}</div>
+        <div class="method-info">
+          <div class="method-title">${d.title}</div>
+          <div class="method-formula">${d.formula}</div>
+        </div>
+      </div>
+      <div class="bank-wrap">
+        <div class="bank-label">Pilihan angka — drag ke tabel</div>
+        <div class="bank" id="bank-${d.prefix}">${bankHtml}</div>
+      </div>
+      <div class="table-wrap">
+        <table class="work-table">
+          <thead><tr>${d.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="btn-row">
+        <button class="btn primary" onclick="checkSection('${key}')">Cek jawaban</button>
+        <button class="btn" onclick="resetSection('${key}')">Reset</button>
+        <span class="score-badge" id="score-${d.prefix}" style="display:none"></span>
+      </div>
+    </div>`;
+}
+
+function buildPembahasan(){
+  const total = scores.reduce((a,b)=>a+b,0);
+  const max = 9*4;
+  return `
+    <div class="pembahasan">
+      <div class="pb-hero">
+        <div class="pb-hero-score">${total} / ${max}</div>
+        <div class="pb-hero-label">total sel benar dari semua kelompok</div>
+      </div>
+      <div style="padding:0 24px">
+        <div class="pb-aha">
+          <div class="pb-aha-title">Momen "aha" hari ini</div>
+          <div class="pb-aha-text">
+            NTB Konstan keempat kelompok hasilnya <span class="highlight">sama semua</span> — Rp 12.000 / 12.800 / 14.000 / 14.400. 
+            Bukan kebetulan. Artinya keempat metode itu ngitung hal yang <em>sama persis</em>, 
+            cuma jalan masuknya beda tergantung data apa yang tersedia di lapangan.
+          </div>
+        </div>
+      </div>
+      <div class="pb-items">
+        <div class="pb-item">
+          <div class="pb-method"><span class="pb-tag">Revaluasi</span></div>
+          <div class="pb-text">Paling straightforward — langsung kalikan kuantitas tahun berjalan dengan harga tahun dasar. 
+          Cocok kalau data kuantitas dan harga per komoditas tersedia dengan jelas. 
+          Tapi kalau kualitas produknya berubah dari tahun ke tahun, angkanya bisa menyesatkan.</div>
+        </div>
+        <div class="pb-item">
+          <div class="pb-method"><span class="pb-tag">Ekstrapolasi</span></div>
+          <div class="pb-text">Gak perlu data harga tiap tahun, cukup indeks produksi sebagai ekstrapolator. 
+          Hasilnya sedikit beda dari Revaluasi karena indeks dibulatkan. 
+          Cocok dipakai kalau datanya lebih ke statistik produksi, bukan harga langsung.</div>
+        </div>
+        <div class="pb-item">
+          <div class="pb-method"><span class="pb-tag">Deflasi</span></div>
+          <div class="pb-text">Mulai dari Output Berlaku lalu dibagi indeks harga. 
+          Ini yang paling sering dipakai di dunia nyata karena data ekonomi biasanya tersedia dalam nilai uang, 
+          bukan kuantitas fisik. Konsumsi antara diasumsikan proporsional dengan output.</div>
+        </div>
+        <div class="pb-item">
+          <div class="pb-method"><span class="pb-tag">Double Deflasi</span></div>
+          <div class="pb-text">Paling akurat — konsumsi antara dideflasi pakai indeks harganya sendiri, bukan diasumsikan proporsional. 
+          Penting karena harga bahan baku bisa naik lebih cepat atau lebih lambat dari harga produk jadi. 
+          Direkomendasikan SNA 2008, tapi butuh data lebih lengkap.</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+const KEYS = ['revaluasi','ekstrapolasi','deflasi','double'];
+
+function renderSection(i){
+  const el = document.getElementById('sections');
+  if(i < 4) el.innerHTML = buildMethodSection(KEYS[i]);
+  else el.innerHTML = buildPembahasan();
+}
+
+function switchTab(i){
+  currentTab = i;
+  document.querySelectorAll('.tab').forEach((t,idx) => {
+    t.classList.toggle('active', idx===i);
+  });
+  renderSection(i);
+}
+
+function dStart(e, id){
+  dragSrc = id;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(()=>{ const el=document.getElementById(id); if(el) el.classList.add('dragging'); },0);
+}
+
+function dOver(e){
+  e.preventDefault();
+  e.currentTarget.classList.add('over');
+}
+
+function dLeave(e){
+  e.currentTarget.classList.remove('over');
+}
+
+function dDrop(e, cell){
+  e.preventDefault();
+  cell.classList.remove('over');
+  if(!dragSrc) return;
+  const chip = document.getElementById(dragSrc);
+  if(!chip) return;
+
+  if(cell.dataset.filled){
+    const old = document.getElementById(cell.dataset.filled);
+    if(old) old.classList.remove('used');
+  }
+
+  const val = chip.dataset.val;
+  cell.innerHTML = `<span class="drop-val">${fmt(parseFloat(val))}</span>`;
+  cell.classList.add('filled');
+  cell.classList.remove('correct','wrong');
+  cell.dataset.filled = dragSrc;
+  cell.dataset.placed = val;
+  chip.classList.add('used');
+  chip.classList.remove('dragging');
+  dragSrc = null;
+}
+
+function checkSection(key){
+  const d = DATA[key];
+  const drops = document.querySelectorAll(`[id^="${d.prefix}-"][id*="-"]`);
+  let correct = 0; let total = 0;
+  drops.forEach(cell => {
+    if(!cell.classList.contains('drop-cell')) return;
+    total++;
+    const placed = parseFloat(cell.dataset.placed);
+    const answer = parseFloat(cell.dataset.answer);
+    cell.classList.remove('correct','wrong');
+    if(!isNaN(placed) && Math.abs(placed - answer) < 2){
+      cell.classList.add('correct'); correct++;
+    } else {
+      cell.classList.add('wrong');
+    }
+  });
+  const idx = KEYS.indexOf(key);
+  scores[idx] = correct;
+  const sb = document.getElementById('score-'+d.prefix);
+  sb.style.display = 'inline-block';
+  sb.textContent = correct+' / '+total+' benar';
+  if(correct === total){
+    const tabs = document.querySelectorAll('.tab');
+    tabs[idx].classList.add('done');
+  }
+}
+
+function resetSection(key){
+  const idx = KEYS.indexOf(key);
+  scores[idx] = 0;
+  renderSection(currentTab);
+}
+
+renderSection(0);
+
+let seconds = 15*60;
+const timerEl = document.getElementById('timer');
+const interval = setInterval(()=>{
+  seconds--;
+  if(seconds<=0){ clearInterval(interval); timerEl.textContent='00:00'; timerEl.classList.add('warn'); return; }
+  const m = String(Math.floor(seconds/60)).padStart(2,'0');
+  const s = String(seconds%60).padStart(2,'0');
+  timerEl.textContent = m+':'+s;
+  if(seconds<=120) timerEl.classList.add('warn');
+}, 1000);
+</script>
+</body>
+</html>
