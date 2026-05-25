@@ -545,6 +545,8 @@
   <div class="timer-wrap">
     <span class="timer-label">Waktu</span>
     <div class="timer" id="timer">15:00</div>
+    <button onclick="togglePause()" id="btn-pause" style="padding:4px 10px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Pause</button>
+    <button onclick="resetTimer()" style="padding:4px 10px;border-radius:6px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Reset</button>
   </div>
 </div>
 
@@ -834,8 +836,21 @@ function resetSection(key){
 renderSection(0);
 
 let seconds = 15*60;
+let paused = false;
+function togglePause(){
+  paused = !paused;
+  document.getElementById('btn-pause').textContent = paused ? 'Lanjut' : 'Pause';
+}
+function resetTimer(){
+  seconds = 15*60;
+  paused = false;
+  document.getElementById('btn-pause').textContent = 'Pause';
+  timerEl.classList.remove('warn');
+  timerEl.textContent = '15:00';
+}
 const timerEl = document.getElementById('timer');
 const interval = setInterval(()=>{
+  if(paused) return;
   seconds--;
   if(seconds<=0){ clearInterval(interval); timerEl.textContent='00:00'; timerEl.classList.add('warn'); return; }
   const m = String(Math.floor(seconds/60)).padStart(2,'0');
